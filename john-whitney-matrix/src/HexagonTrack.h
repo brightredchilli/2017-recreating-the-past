@@ -9,6 +9,15 @@
 #define HexagonTrack_h
 #include "ofMain.h"
 
+float parabola(float x) {
+    float k = 4.0;
+    return pow( 4.0*x*(1.0-x), k);
+}
+
+float invParabola(float x) {
+    return 1 - parabola(x);
+}
+
 class HexagonTrack {
 protected:
     float numItems; // float for easy division
@@ -106,7 +115,13 @@ protected:
 
     // and the spacing between each of the tracks
     float spacing(float time, int i) {
-        return time + i * cos(time * 0.5) * 0.16;
+        float target = 4;
+        float duration = 5;
+        if (time >= target && time < target+duration) {
+            return time + i * 0.16 * invParabola((time - target) / duration);
+        } else {
+            return time + i * 0.16;
+        }
     }
 
     float size(float time, int i) {
