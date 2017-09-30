@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxGui.h"
+#include "HexagonTrack.h"
 
 class ofApp : public ofBaseApp {
 
@@ -26,11 +27,9 @@ private:
     ofxPanel gui;
     ofxFloatSlider track2Cos;
     ofxFloatSlider track2Sin;
-    ofPoint center;
-    ofPoint track1(float time);
-    ofPoint track2(float time);
-    ofPoint track3(float time);
-    void drawHexagon(ofPoint point, float size);
     bool debugTrails;
-		
+
+    HexagonTrack1 hexagonTrack1;
+    HexagonTrack2 hexagonTrack2;
+    HexagonTrack3 hexagonTrack3;
 };
