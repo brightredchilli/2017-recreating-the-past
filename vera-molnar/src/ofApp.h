@@ -21,6 +21,10 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
-    int row;
-    int col;
+private:
+    vector<ofPolyline> lines;
+    void setUpLines();
+    int currentLine = 0;
+    int currentVertex = 0;
+    int verticesPerFrame = 3;
 };
