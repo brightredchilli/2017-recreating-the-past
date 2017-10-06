@@ -18,6 +18,7 @@ protected:
     float count;
     float baseSize;
     float spacingRatio;
+
     ofPoint center;
 
     HexagonTrack() {
@@ -51,11 +52,34 @@ protected:
     }
 
 public:
+    float absoluteTime = 0;
+    float freezeTime = 2;
+    float freezeDuration = TWO_PI;
+    float lastFrame = 0;
+
     // draw the actual thing
-    void draw(float time) {
+    virtual void draw(float time) {
+
+        float elapsed = time - lastFrame;
+        lastFrame = time;
+
+        float offset = time - freezeTime;
+        if (time >= freezeTime && time < freezeTime+freezeDuration) {
+            if (offset < HALF_PI) {
+                elapsed *= cos(offset); //slowly reduce elapsedtime's contribution to 0
+            } else if (freezeDuration - offset < HALF_PI) {
+                //slowly ease elapsed time's contribution back up by evaluating cos(1.5pi) to cos(2pi)
+                float lastPart = HALF_PI -(freezeDuration - offset);
+                elapsed *= cos(PI + HALF_PI + lastPart);
+            } else {
+                elapsed = 0; //freeze time;
+            }
+        }
+        absoluteTime += elapsed;
+
         for(int i = 0; i < numItems; i++) {
             float count = numItems - 1;
-            float timeForIndex = spacing(time, i);
+            float timeForIndex = spacing(absoluteTime, i);
             ofPoint t = location(timeForIndex);
             float shapeSize = size(timeForIndex, i);
             drawShape(t, shapeSize);
@@ -64,6 +88,8 @@ public:
 
     // collapses the spacing from the 'default'
     float freezeSpacing(float time, int i, float target, float duration) {
+        i = count - i;
+
         if (time >= target && time < target+duration) {
             return time + i * spacingRatio * invParabola((time - target) / duration);
         } else {
@@ -73,6 +99,7 @@ public:
 
     // default spacing
     virtual float defaultSpacing(float time, int i) {
+        i = count - i;
         return time + i * spacingRatio;
     }
 
@@ -85,80 +112,35 @@ public:
     float invParabola(float x) {
         return 1 - parabola(x);
     }
+
+    float easeOut(float t) {
+        return -1 * t*(t-2);
+    };
 };
 
 class HexagonTrack1 : public HexagonTrack {
-protected:
-
+public:
 
     ofPoint location(float time) {
         // make time stop, and even go backwards
         float r = ofGetWidth() * .25; // ~ 200 - 300
-        float x = center.x + r * sin(time * 1.0);
+        float x = center.x + r * sin(time * 3.0);
         float y = center.y + r * cos(time * 1.0);
+        x += ofSignedNoise(time) * 20;
+        y += ofSignedNoise(time) * 20;
         return ofPoint(x, y);
     }
 
     // and the spacing between each of the tracks
     float spacing(float time, int i) {
-        float freeze = freezeSpacing(time, i, 4, 5);
-        if (!IsInvalidSpacing(freeze)) {
-            return freeze;
-        }
+        spacingRatio = 0.40 * sin(ofGetElapsedTimef() * 0.2 + 0.1);
+
         return defaultSpacing(time, i);
     }
 
     float size(float time, int i) {
-        float count = numItems - 1;
-        return baseSize + 40 * cos((count - i)/(count) * HALF_PI);
+        return sin(time * 0.3) * 20 + baseSize + 40 * cos(i/(count) * HALF_PI);
     }
 };
-
-class HexagonTrack2 : public HexagonTrack {
-protected:
-    ofPoint location(float time) {
-        float r = ofGetWidth() * .18;
-        float x = center.x + r * (sin(time * 1) + sin(time * 3));
-        float y = center.y + r * (cos(time * 1) + sin(time * 2));
-        return ofPoint(x, y);
-    }
-
-    // and the spacing between each of the tracks
-    float spacing(float time, int i) {
-        float freeze = freezeSpacing(time, i, 4, 5);
-        if (!IsInvalidSpacing(freeze)) {
-            return freeze;
-        }
-        return defaultSpacing(time, i);
-    }
-
-    float size(float time, int i) {
-        return baseSize + 40 * cos((count-i)/(count) * HALF_PI);
-    }
-};
-
-class HexagonTrack3 : public HexagonTrack {
-protected:
-    ofPoint location(float time) {
-        float r = ofGetWidth() * .18;
-        float x = center.x + r * cos(time * 1.0 + sin(time) * 0.3);
-        float y = center.y + r * sin(time * 1.6  + sin(time) * 0.8);
-        return ofPoint(x, y);
-    }
-
-    // and the spacing between each of the tracks
-    float spacing(float time, int i) {
-        float freeze = freezeSpacing(time, i, 4, 5);
-        if (!IsInvalidSpacing(freeze)) {
-            return freeze;
-        }
-        return defaultSpacing(time, i);
-    }
-
-    float size(float time, int i) {
-        return baseSize + 40 * cos((count-i)/(count) * HALF_PI);
-    }
-};
-
 
 #endif /* HexagonTrack_h */

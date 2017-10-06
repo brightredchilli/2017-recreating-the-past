@@ -28,8 +28,9 @@ private:
     ofxFloatSlider track2Cos;
     ofxFloatSlider track2Sin;
     bool debugTrails;
+    float time;
 
     HexagonTrack1 hexagonTrack1;
-    HexagonTrack2 hexagonTrack2;
-    HexagonTrack3 hexagonTrack3;
+    HexagonTrack1 hexagonTrack2;
+    HexagonTrack1 hexagonTrack3;
 };
