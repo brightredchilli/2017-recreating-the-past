@@ -2,7 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxBlur.h"
-
+#include "ofxPanel.h"
 
 class RosePetalDrawer {
 protected:
@@ -59,7 +59,7 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
-protected:
+private:
     void drawLoop();
     void drawLoop1();
     void drawLoop2();
@@ -74,9 +74,16 @@ protected:
     void drawLoop11();
     void drawLoop12();
     int numLoops;
+    bool blurEnabled;
 
     vector<bool> loops;
     ofPoint center;
     ofxBlur blur;
+
+    ofxPanel panel;
+    ofParameterGroup group;
+    ofParameter < int > slider1;
+    ofParameter < int > slider2;
+
 		
 };

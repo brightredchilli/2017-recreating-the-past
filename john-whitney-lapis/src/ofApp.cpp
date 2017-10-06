@@ -4,7 +4,7 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 
-    ofSetCircleResolution(100);
+    ofSetCircleResolution(50);
     center.set(0, 0);
     ofBackground(0);
     blur.setup(ofGetWidth(), ofGetHeight(), 2, .2, 4, .3);
@@ -12,8 +12,17 @@ void ofApp::setup(){
     for(int i = 0; i < numLoops; i++) {
         loops.push_back(false);
     }
-//    loops[9] = true;
-    loops[12] = true;
+    loops[9] = true;
+    loops[10] = true;
+    loops[11] = true;
+
+    panel.setup();
+    group.add(slider1.set("inner count", 50, 0, 100));
+    group.add(slider2.set("outer count", 60, 0, 100));
+
+    panel.add(group);
+
+    panel.loadFromFile("settings.xml");
 }
 
 //--------------------------------------------------------------
@@ -24,7 +33,10 @@ void ofApp::update(){
 void ofApp::draw(){
     // draw circles around in a circle
 
-//    blur.begin();
+    if (blurEnabled) {
+        blur.begin();
+    }
+
     ofPushStyle();
     ofStyle style = ofGetStyle();
     style.rectMode = OF_RECTMODE_CENTER;
@@ -75,10 +87,13 @@ void ofApp::draw(){
 
     ofPopMatrix();
     ofPopStyle();
-//    blur.end();
-//    blur.draw();
+    if (blurEnabled) {
+        blur.end();
+        blur.draw();
+    }
 
     ofDrawBitmapString(ofToString((int) ofGetFrameRate()), 10, 20);
+    panel.draw();
 }
 
 
@@ -125,18 +140,14 @@ void ofApp::drawLoop12() {
 void ofApp::drawLoop9() {
 
     float time = ofGetElapsedTimef() * 0.01;
-    int count = 80;
+    int count = 70;
 
     float rowoffset = 30;
     float increment = TWO_PI / count;
     float innerRadius = 480;
 
     ofPushStyle();
-    ofColor color = ofColor::fromHex(0xAAAAAA);
-    color.r += 100 * sin(time);
-    color.g += 100 * cos(time * 0.36);
-    color.b += 100 * sin(time * 0.96);
-
+    ofColor color = ofColor::fromHex(0xFFFFFF);
     ofSetColor(color, 230);
 
     for (int i = 0; i < count; i++) {
@@ -146,17 +157,16 @@ void ofApp::drawLoop9() {
 
         ofPushMatrix();
         ofTranslate(x, y);
-        int childCount = 100;
+        int childCount = 90 + sin(time * 0.8) * 20;
         int childRadius = 330;
         float childIncrement = TWO_PI / childCount;
         for (int j = 0; j < childCount; j++) {
             x = radius * sin(-time + childIncrement * j);
             y = radius * cos(-time + childIncrement * j);
-            ofDrawCircle(x, y, 2);
+            ofDrawCircle(x, y, 1.5);
         }
 
         ofPopMatrix();
-
 
     }
     ofPopStyle();
@@ -169,10 +179,10 @@ void ofApp::drawLoop10() {
 
     float rowoffset = 40;
     float increment = TWO_PI / count;
-    float innerRadius = 480;
+    float innerRadius = 280;
 
     ofPushStyle();
-    ofSetColor(ofColor::fromHex(0xF5CCE8), 230);
+    ofSetColor(ofColor::fromHex(0xFFFFFF), 230);
 
     for (int i = 0; i < count; i++) {
         float radius = innerRadius;
@@ -188,7 +198,7 @@ void ofApp::drawLoop10() {
             childRadius = childRadius + 100 * cos(3 * childIncrement * j)*sin(3 * childIncrement * j);
             x = childRadius * sin(-time + childIncrement * j);
             y = childRadius * cos(-time + childIncrement * j);
-            ofDrawCircle(x, y, 2);
+            ofDrawCircle(x, y, 1.2);
         }
 
         ofPopMatrix();
@@ -199,16 +209,15 @@ void ofApp::drawLoop10() {
 void ofApp::drawLoop11() {
 
     float time = ofGetElapsedTimef() * 0.01;
-//    float time = ofGetElapsedTimef() * ofMap(ofNoise(ofGetElapsedTimef() * 0.01), 0, 1, 0, 0.2);
-    int count = 80;
+    int count = 75;
 
     float rowoffset = 40;
     float increment = TWO_PI / count;
-    float innerRadius = 480;
+    float innerRadius = 280;
 
     ofPushStyle();
     ofColor color = ofColor::fromHex(0xF5CCE8);
-    ofSetColor(color, 230);
+    ofSetColor(color);
 
 
     for (int i = 0; i < count; i++) {
@@ -218,14 +227,14 @@ void ofApp::drawLoop11() {
 
         ofPushMatrix();
         ofTranslate(x, y);
-        int childCount = 120;
-        int childRadius = 300;
+        int childCount = 43;
+        int childRadius = 535;
         float childIncrement = TWO_PI / childCount;
         for (int j = 0; j < childCount; j++) {
-            childRadius = childRadius + 100 * cos(3./5. * time);
+            childRadius = childRadius + 200 * sin(j / (childCount - 1) * TWO_PI);
             x = childRadius * sin(-time + childIncrement * j);
             y = childRadius * cos(-time + childIncrement * j);
-            ofDrawCircle(x, y, 2 + sin(time));
+            ofDrawCircle(x, y, 1.5);
         }
 
         ofPopMatrix();
@@ -503,7 +512,11 @@ void ofApp::mouseMoved(int x, int y ){
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
+    float xNorm = (float)x / (float)ofGetWidth();
+    float yNorm = (float)y / (float)ofGetHeight();
 
+    slider1.set(slider1.getMin() + (slider1.getMax() - slider1.getMin()) * xNorm);
+    slider2.set(slider2.getMin() + (slider2.getMax() - slider2.getMin()) * yNorm);
 }
 
 //--------------------------------------------------------------
