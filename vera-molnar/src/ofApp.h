@@ -27,4 +27,5 @@ private:
     int currentLine = 0;
     int currentVertex = 0;
     int verticesPerFrame = 3;
+    bool recording = false;
 };

@@ -94,7 +94,7 @@ void ofApp::setUpLines() {
 //--------------------------------------------------------------
 void ofApp::draw() {
     // for some reason, drawing is irresponsive in the first couple of frames. we just skip them.
-    if (ofGetFrameNum() < 4) {
+    if (ofGetFrameNum() < 30) {
         return;
     }
     // draw the vertices one by one
@@ -110,12 +110,19 @@ void ofApp::draw() {
             }
         }
     }
+    if (recording) {
+        ofImage img = ofImage();
+        img.grabScreen(0, 0 , ofGetWidth(), ofGetHeight());
+        img.save("screenshot " + ofGetTimestampString() + ".png");
+    }
 
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+    if (key == 'x') {
+        recording = !recording;
+    }
 }
 
 //--------------------------------------------------------------
