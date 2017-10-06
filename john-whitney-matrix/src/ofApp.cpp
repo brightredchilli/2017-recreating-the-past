@@ -25,7 +25,7 @@ void ofApp::update() {
 void ofApp::draw() {
     gui.draw();
 
-    float time = ofGetElapsedTimef();
+    float time = ofGetElapsedTimef() * 0.7; // slow everyone down
     hexagonTrack1.draw(time);
     hexagonTrack2.draw(time);
     hexagonTrack3.draw(time);
