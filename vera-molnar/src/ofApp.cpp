@@ -3,16 +3,15 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     ofBackground(0);
-    row = 100;
-    col = 100;
     ofEnableSmoothing();
     ofEnableAntiAliasing();
     ofSetLineWidth(0.1);
+    setUpLines();
+    ofSetBackgroundAuto(false);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-
 }
 
 ofVec2f getRandomDirection() {
@@ -32,28 +31,27 @@ ofVec2f getRandomDirection() {
     }
 }
 
-//--------------------------------------------------------------
-void ofApp::draw() {
+void ofApp::setUpLines() {
     ofSeedRandom(0);
 
     float lineHeight = 35;
     float padding = 50;
+    float radius = 30;
     float maxWidth = ofGetWidth() - padding;
     float maxHeight = ofGetHeight() - padding;
-
 
     ofPoint pos = ofPoint(padding, padding + lineHeight);
 
     while (pos.y < maxHeight) {
-        while (pos.x < maxWidth) {
+        ofPolyline line;
+        line.addVertex(pos);
 
-            ofPushMatrix();
-            ofTranslate(pos);
+        while (pos.x < maxWidth) {
 
             ofVec2f randomDirection = getRandomDirection();
 
             float angle = ofDegToRad(randomDirection.x);
-            float radius = 30;
+
             float x1 = radius * cos(angle);
             float y1 = radius * sin(angle);
 
@@ -73,27 +71,45 @@ void ofApp::draw() {
                                                                ofPoint(-10000, 0),
                                                                ofPoint(10000, 0),
                                                                intersection);
-            ofPoint endPoint = point2;
             if (foundIntersection) {
-                endPoint = intersection;
+                point2 = intersection;
             }
 
-
-            ofDrawLine(ofPoint(0, 0), point1);
-            ofDrawLine(point1, endPoint);
-
-
-            ofPopMatrix();
-
-
-
-            pos.x += endPoint.x;
-
+            pos += point1;
+            line.addVertex(pos);
+            pos += point2 - point1;
+            line.addVertex(pos);
         }
+
+        // add the last point on the line, since it will be skipped if we exit the
+        // while loop
+
+        lines.push_back(line);
+
         pos.x = padding;
         pos.y += lineHeight;
     }
+}
 
+//--------------------------------------------------------------
+void ofApp::draw() {
+    // for some reason, drawing is irresponsive in the first couple of frames. we just skip them.
+    if (ofGetFrameNum() < 4) {
+        return;
+    }
+    // draw the vertices one by one
+    for (int i = 0; i <= verticesPerFrame; i++) {
+        if (currentLine < lines.size()) {
+            ofPolyline line = lines[currentLine];
+            if (currentVertex + 1 < line.size()) {
+                ofDrawLine(line[currentVertex], line[currentVertex + 1]);
+                currentVertex++;
+            } else {
+                currentLine++;
+                currentVertex = 0;
+            }
+        }
+    }
 
 }
 

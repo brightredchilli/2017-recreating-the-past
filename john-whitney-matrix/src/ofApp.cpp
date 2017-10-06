@@ -12,23 +12,25 @@ void ofApp::setup() {
     gui.add(track2Cos.setup("track 2 cos", 1.0, 0.5, 6.0));
     gui.add(track2Sin.setup("track 2 sin", 1.0, 0.5, 6.0));
 
-//    ofSetBackgroundAuto(false);
+    time = 0;
 
+    hexagonTrack2.freezeTime += 3;
+    hexagonTrack3.freezeTime += 8;
 }
 
 //--------------------------------------------------------------
 void ofApp::update() {
-
+    time += ofGetLastFrameTime();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw() {
     gui.draw();
 
-    float time = ofGetElapsedTimef();
+    float time = ofGetElapsedTimef() * 0.6; // slow everyone down
     hexagonTrack1.draw(time);
-    hexagonTrack2.draw(time);
-    hexagonTrack3.draw(time);
+    hexagonTrack2.draw(time + 3);
+    hexagonTrack3.draw(time + 8);
 }
 
 //--------------------------------------------------------------
