@@ -16,4 +16,6 @@ class ofApp : public ofBaseApp{
 		void mousePressed(int x, int y, int button);
 
     bool recording = false;
+    ofPoint center;
+    ofPoint signedRandomPoint();
 };
