@@ -6,6 +6,12 @@ void ofApp::setup(){
     center.set(ofGetWidth()/2, ofGetHeight()/2);
     ofBackground(0);
     stringToUse = "SFPC";
+
+    
+    setUpCooperDots1();
+}
+
+void ofApp::setUpCooperDots1() {
     loadCharacters(stringToUse);
 }
 
@@ -17,47 +23,38 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw() {
 
-
+    drawCooperDots1();
+    if (recording) {
+        ofImage img = ofImage();
+        img.grabScreen(0, 0 , ofGetWidth(), ofGetHeight());
+        img.save("screenshot " + ofGetTimestampString() + ".png");
+    }
+}
+void ofApp::drawCooperDots1() {
     ofPushMatrix();
     ofTranslate(center);
     ofTranslate(originOffsetForCharacters(stringToUse));
 
+    float time = ofGetElapsedTimef() * 2;
     for (ofTTFCharacter shape : characters) {
         vector<ofPolyline> lines = shape.getOutline();
-//        cout << shape.getOutline().size() << endl;
         for (ofPolyline line : lines) {
             line = line.getResampledBySpacing(5);
-            line.draw();
-
-        }
-
-    }
-
-
-    vector <ofPath> cs =  font.getStringAsPoints("hello");
-    cout << font.isLoaded() << endl; // prints 'true's
-    for (int i = 0; i < cs.size(); i++){
-
-        cs[i].draw(); // this draws properly
-        cout << cs[i].getOutline().size() << endl; // prints 0
-
-        // this for loop never gets executed.
-        for (int j = 0; j < cs[i].getOutline().size(); j++){
-            ofPolyline temp = cs[i].getOutline()[j];
-            temp = temp.getResampledBySpacing(5);
-            temp.draw();
+            for (int i = 0; i < line.size(); i++) {
+                ofPoint point = line[i];
+                ofSetColor(255, 255, 255, 128 + 127 *sin(time + 0.1 * i));
+                ofDrawCircle(point.x, point.y, 1);
+            }
         }
     }
-
     ofPopMatrix();
-
 }
 
 void ofApp::loadCharacters(const std::string &s) {
     characters = font.getStringAsPoints(s);
 }
 
-ofPoint ofApp::originOffsetForCharacters(const std::string &s) {
+ ofPoint ofApp::originOffsetForCharacters(const std::string &s) {
     auto bounds = font.getStringBoundingBox(s, 0, 0);
     return ofPoint(-bounds.width/2, bounds.height/2);
 }
@@ -66,8 +63,6 @@ void ofApp::drawStringCentered(const std::string &s, float x, float y) {
     auto offset = originOffsetForCharacters(s);
     font.drawString(s, x - offset.x, y + offset.y);
 }
-
-
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){

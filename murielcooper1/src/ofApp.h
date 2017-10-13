@@ -16,12 +16,18 @@ class ofApp : public ofBaseApp{
 		void mousePressed(int x, int y, int button);
 
     bool recording = false;
+    bool needsDraw = false;
     ofPoint center;
     ofTrueTypeFont font;
     vector<ofTTFCharacter> characters;
     std::string stringToUse;
+    ofPoint position;
     ofPoint originOffsetForCharacters(const std::string &s);
+    int biggestFontSize;
     void loadCharacters(const std::string &s);
     void drawStringCentered(const std::string &s, float x, float y);
+
+    void setUpCooperDots1();
+    void drawCooperDots1();
 		
 };
