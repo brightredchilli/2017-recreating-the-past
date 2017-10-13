@@ -18,4 +18,8 @@ class ofApp : public ofBaseApp{
     bool recording = false;
     ofPoint center;
     ofPoint signedRandomPoint();
+
+    void drawSineWave();
+    void drawCurve(bool smooth);
+    void drawStraightWithIntersection();
 };
