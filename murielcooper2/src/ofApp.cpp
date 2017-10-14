@@ -52,26 +52,6 @@ void ofApp::draw(){
     ofPopMatrix();
 }
 
-float function_DoubleEllipticSigmoid (float x) {
-    float a = 0.823;
-    float b = 0.463;
-    float y = 0;
-    if (x<=a){
-        if (a <= 0){
-            y = 0;
-        } else {
-            y = b * (1.0 - (sqrt(a*a - x*x)/a));
-        }
-    }
-    else {
-        if (a >= 1){
-            y = 1.0;
-        } else {
-            y = b + ((1.0-b)/(1.0-a))*sqrt((1.0-a)*(1.0-a) - (x-1.0)*(x-1.0));
-        }
-    }
-    return y;
-}
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
