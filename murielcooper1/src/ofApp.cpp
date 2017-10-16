@@ -1,18 +1,28 @@
 #include "ofApp.h"
 
+#define TYPE_COLOR 1
+#define TYPE_ALPHA 2
+
 //--------------------------------------------------------------
 void ofApp::setup(){
     font.load("SF.otf", 200, true, true, true);
     center.set(ofGetWidth()/2, ofGetHeight()/2);
     ofBackground(0);
     stringToUse = "SFPC";
-
-    
-    setUpCooperDots1();
+    loadCharacters(stringToUse);
+    setUpCooperDots2();
 }
 
-void ofApp::setUpCooperDots1() {
-    loadCharacters(stringToUse);
+void ofApp::setUpCooperDots2() {
+    for (ofTTFCharacter shape : characters) {
+        vector<ofPolyline> lines = shape.getOutline();
+        for (ofPolyline line : lines) {
+            line = line.getResampledBySpacing(5);
+            for (ofPoint point : line) {
+                cooper2Dots.push_back(point);
+            }
+        }
+    }
 }
 
 //--------------------------------------------------------------
@@ -23,14 +33,15 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw() {
 
-    drawCooperDots1();
+    drawCooperDots1(true);
+//    drawCooperDots2();
     if (recording) {
         ofImage img = ofImage();
         img.grabScreen(0, 0 , ofGetWidth(), ofGetHeight());
         img.save("screenshot " + ofGetTimestampString() + ".png");
     }
 }
-void ofApp::drawCooperDots1() {
+void ofApp::drawCooperDots1(int type) {
     ofPushMatrix();
     ofTranslate(center);
     ofTranslate(originOffsetForCharacters(stringToUse));
@@ -42,11 +53,37 @@ void ofApp::drawCooperDots1() {
             line = line.getResampledBySpacing(5);
             for (int i = 0; i < line.size(); i++) {
                 ofPoint point = line[i];
-                ofSetColor(255, 255, 255, 128 + 127 *sin(time + 0.1 * i));
+                if (type == TYPE_COLOR) {
+                    float mult = 0.03 * i;
+                    int r = 127 + 127 * sin(time + mult);
+                    int g = 127 + 127 * sin(time + mult);
+                    int b = 127 + 127 * sin(time * 0.4 + mult);
+                    ofSetColor(r, g, b);
+                } else if (type == TYPE_ALPHA) {
+                    ofSetColor(255, 255, 255, 128 + 127 *sin(time + 0.1 * i));
+                }
+
                 ofDrawCircle(point.x, point.y, 1);
             }
         }
     }
+    ofPopMatrix();
+}
+
+void ofApp::drawCooperDots2() {
+    ofSetBackgroundAuto(false);
+    ofPushMatrix();
+    ofTranslate(center);
+    ofTranslate(originOffsetForCharacters(stringToUse));
+
+    if (cooper2Dots.size() > 0) {
+        int random = ofRandom(cooper2Dots.size());
+        ofPoint point = cooper2Dots[random];
+        ofDrawCircle(point, 1);
+        cooper2Dots.erase(cooper2Dots.begin() + random);
+    }
+
+
     ofPopMatrix();
 }
 

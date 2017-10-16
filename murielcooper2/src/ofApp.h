@@ -23,5 +23,15 @@ class ofApp : public ofBaseApp{
 
     ofPoint center;
     ofTrueTypeFont font;
+    vector<ofMesh> meshOutlines;
+    string myString;
+    float initialScale;
+    float initialScaleBy;
+    float textToScreenWidthRatio;
+    float textBounds;
+
+    void drawMeshOutlines();
+    void drawDownwards();
+    void drawUpwards();
 };
 float function_DoubleEllipticSigmoid (float x);
