@@ -30,6 +30,7 @@ class ofApp : public ofBaseApp{
     float textToScreenWidthRatio;
     float textBounds;
 
+    bool recording;
     void drawMeshOutlines();
     void drawDownwards();
     void drawUpwards();

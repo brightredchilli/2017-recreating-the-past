@@ -25,10 +25,21 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    ofScale(0 + sin(ofGetElapsedTimef()), 0 + sin(ofGetElapsedTimef()));
-    ofTranslate(ofGetWidth()/2, ofGetElapsedTimef()*2);
+
+    float time = fmod(ofGetElapsedTimef() * 0.5, HALF_PI);
+    float s = 1 - (ofGetElapsedTimef() * 0.01); // sin(time * 0.5);
+    ofPushMatrix();
+    ofTranslate(ofGetWidth()/2, ofGetHeight());
+    ofScale(s, s);
+    ofTranslate(-ofGetWidth()/2, -ofGetHeight() * s);
     drawDownwards();
     drawUpwards();
+    ofPopMatrix();
+    if (recording) {
+        ofImage img = ofImage();
+        img.grabScreen(0, 0 , ofGetWidth(), ofGetHeight());
+        img.save("screenshot " + ofGetTimestampString() + ".png");
+    }
 }
 
 void ofApp::drawDownwards() {
@@ -85,7 +96,7 @@ void ofApp::drawUpwards() {
     bounds.x = center.x - bounds.width/2;
     bounds.y = 0;
     auto previousBounds = bounds;
-//    previousBounds.y += bounds.height; // some accounting so that the bounds is correct on first run
+    previousBounds.y += bounds.height; // some accounting so that the bounds is correct on first run
 
     int count = 0;
     float scale = initialScale;
@@ -133,7 +144,9 @@ void ofApp::drawMeshOutlines() {
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+    if (key == 'x') {
+        recording = !recording;
+    }
 }
 
 //--------------------------------------------------------------
