@@ -33,7 +33,7 @@ void ofApp::draw(){
     ofPushMatrix();
     ofScale(3,3);
 
-    if (vidGrabber.isFrameNew() && sourceImage.isAllocated() && ofGetFrameNum() % 2 == 0 ) {
+    if (vidGrabber.isFrameNew() && sourceImage.isAllocated()) {
         targetImage = ofImage(vidGrabber.getPixels());
         ofImage &image = sourceImage;
         int cols = image.getWidth() / res;
@@ -42,38 +42,35 @@ void ofApp::draw(){
         int bytesPerPixel = 3;
         unsigned char * targetPointer = targetImage.getPixels().getData();
 
+        for (int it = 0; it < 5000; it++) {
+            int i = floor(ofRandom(cols)) * res;
+            int j = floor(ofRandom(rows)) * res;
+            float previousTargetScore = targetScore;
+            int index = (j * image.getWidth() + i) * bytesPerPixel;
+            int x = i / res;
+            int y = j / res;
 
-        for (int it = 0; it < 1; it++) {
-            for (int i = 0; i < image.getWidth(); i += res) {
-                for (int j = 0; j < image.getHeight(); j += res) {
-                    float previousTargetScore = targetScore;
-                    int index = (j * image.getWidth() + i) * bytesPerPixel;
-                    int x = i / res;
-                    int y = j / res;
+            int randX = floor(ofRandom(cols)) * res;
+            int randY = floor(ofRandom(rows)) * res;
+            int randIndex = (randY * image.getWidth() + randX) * bytesPerPixel;
 
-                    int randX = floor(ofRandom(cols)) * res;
-                    int randY = floor(ofRandom(rows)) * res;
-                    int randIndex = (randY * image.getWidth() + randX) * bytesPerPixel;
+            unsigned char * from = getSubImage(image, i, j, res);
+            unsigned char * to = getSubImage(image, randX, randY, res);
 
-                    unsigned char * from = getSubImage(image, i, j, res);
-                    unsigned char * to = getSubImage(image, randX, randY, res);
+            // calculate costs
+            float fromScore = distance(from, targetPointer + index);
+            float toScore = distance(to, targetPointer + randIndex);
 
-                    // calculate costs
-                    float fromScore = distance(from, targetPointer + index);
-                    float toScore = distance(to, targetPointer + randIndex);
+            float afterSwapFromScore = distance(to, targetPointer + index);
+            float afterSwapToScore = distance(from, targetPointer + randIndex);
 
-                    float afterSwapFromScore = distance(to, targetPointer + index);
-                    float afterSwapToScore = distance(from, targetPointer + randIndex);
-
-                    if (fromScore + toScore < afterSwapFromScore + afterSwapToScore) {
-                        // perform swap
-                        setSubImage(image, i, j, res, to);
-                        setSubImage(image, randX, randY, res, from);
-                    }
-                    delete[] from;
-                    delete[] to;
-                }
+            if (fromScore + toScore > afterSwapFromScore + afterSwapToScore) {
+                // perform swap
+                setSubImage(image, i, j, res, to);
+                setSubImage(image, randX, randY, res, from);
             }
+            delete[] from;
+            delete[] to;
         }
 
         image.update();
