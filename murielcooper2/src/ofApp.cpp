@@ -33,7 +33,7 @@ void ofApp::draw(){
     ofScale(s, s);
     ofTranslate(-ofGetWidth()/2, -ofGetHeight() * s);
     drawDownwards();
-    drawUpwards();
+  //  drawUpwards();
     ofPopMatrix();
     if (recording) {
         ofImage img = ofImage();
