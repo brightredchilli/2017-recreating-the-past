@@ -10,6 +10,9 @@
 
 #include <stdio.h>
 
+float function_SmoothStep (float x);
+float function_SmootherStep (float x);
+float function_AdjustableSigmaHalfGaussian (float x, float a);
 float function_CubicBezier (float x, float a, float b, float c, float d);
 float function_QuadraticBezierStaircase (float x, float a, int n);
 float function_VariableStaircase (float x, float a, int n);

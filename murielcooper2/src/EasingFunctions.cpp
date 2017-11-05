@@ -10,7 +10,36 @@
 
 #define EPSILON 0.00001
 
+float function_SmoothStep (float x) {
+    // http://en.wikipedia.org/wiki/Smoothstep
+//    functionName = "Smooth Step";
+
+    return x*x*(3.0 - 2.0*x);
+}
+
 //------------------------------------------------------------------
+float function_SmootherStep (float x) {
+    // http://en.wikipedia.org/wiki/Smoothstep
+//    functionName = "Perlin's Smoother Step";
+
+    return x*x*x*(x*(x*6.0 - 15.0) + 10.0);
+}
+
+float function_AdjustableSigmaHalfGaussian (float x, float a) {
+    //http://en.wikipedia.org/wiki/Gaussian_function
+    //functionName = "Adjustable-Sigma Gaussian (Half)";
+
+    float sigma = 1.0-a;
+    float out = exp(0.0 - ((x-1.0)*(x-1.0) / (2.0*sigma*sigma)));
+    return out;
+}
+
+//------------------------------------------------------------------
+/***
+ * x defines the input(normalized to 0, 1)
+ * (a,b) defines first influence point (normalized to 0, 1)
+ * (c,d) defines second influence point (normalized to 0, 1)
+ */
 float function_CubicBezier (float x, float a, float b, float c, float d){
     float min_param_a = 0.0 + EPSILON;
     float max_param_a = 1.0 - EPSILON;
