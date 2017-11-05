@@ -43,5 +43,11 @@ Pods/
 Carthage/Build
 
 bin/
+*.png
+*.jpeg
+*.jpg
+*.gif
+**/node_modules/*
+node_modules/
 
 .DS_Store
