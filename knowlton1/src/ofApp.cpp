@@ -42,7 +42,7 @@ void ofApp::draw(){
         int bytesPerPixel = 3;
         unsigned char * targetPointer = targetImage.getPixels().getData();
 
-        for (int it = 0; it < 5000; it++) {
+        for (int it = 0; it < 3000; it++) {
             int i = floor(ofRandom(cols)) * res;
             int j = floor(ofRandom(rows)) * res;
             float previousTargetScore = targetScore;
