@@ -13,8 +13,6 @@ class ofApp : public ofBaseApp {
 
 		void keyPressed(int key);
 		void mouseMoved(int x, int y );
-		void mouseDragged(int x, int y, int button);
-		void mousePressed(int x, int y, int button);
 
 private:
     ofxPanel gui;
