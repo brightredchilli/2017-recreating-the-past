@@ -17,7 +17,7 @@ protected:
     float numItems; // float for easy division
     float count;
     float baseSize;
-    float spacingRatio;
+
 
     ofPoint center;
 
@@ -52,6 +52,8 @@ protected:
     }
 
 public:
+    float spacingRatioMultiplier = 1.0;
+    float spacingRatio;
     float absoluteTime = 0;
     float freezeTime = 2;
     float freezeDuration = TWO_PI;
@@ -134,6 +136,7 @@ public:
     // and the spacing between each of the tracks
     float spacing(float time, int i) {
         spacingRatio = 0.40 * sin(ofGetElapsedTimef() * 0.2 + 0.1);
+        spacingRatio *= spacingRatioMultiplier;
 
         return defaultSpacing(time, i);
     }

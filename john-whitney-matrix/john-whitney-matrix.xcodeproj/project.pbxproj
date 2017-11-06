@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1D54A3D1C2CCEACF3844B3EC /* ofxBaseGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A5F76FF5EC351A3A115DF8E /* ofxBaseGui.cpp */; };
+		2EC104911FAFCA46007C4CEB /* ofRecodedApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2EC1048F1FAFCA46007C4CEB /* ofRecodedApp.cpp */; };
 		56E0EC06162476CFD4D889EF /* ofxPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1383DE3833FF682FF67B5A69 /* ofxPanel.cpp */; };
 		59091B69D0C22F1C78C7FBD7 /* ofxSliderGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49524AA22E67F7EBB94B1959 /* ofxSliderGroup.cpp */; };
 		6A8C8D915D3428323A27A1C6 /* ofxInputField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B4A5CF0F2CB2351896E35436 /* ofxInputField.cpp */; };
@@ -53,6 +54,8 @@
 
 /* Begin PBXFileReference section */
 		1383DE3833FF682FF67B5A69 /* ofxPanel.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxPanel.cpp; path = ../../openFrameworks/addons/ofxGui/src/ofxPanel.cpp; sourceTree = SOURCE_ROOT; };
+		2EC1048F1FAFCA46007C4CEB /* ofRecodedApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofRecodedApp.cpp; sourceTree = "<group>"; };
+		2EC104901FAFCA46007C4CEB /* ofRecodedApp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofRecodedApp.h; sourceTree = "<group>"; };
 		2EDDAE4A1F801991007AF76C /* HexagonTrack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HexagonTrack.h; sourceTree = "<group>"; };
 		2F7C679A2006D31840A70CED /* ofxGuiGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGuiGroup.h; path = ../../openFrameworks/addons/ofxGui/src/ofxGuiGroup.h; sourceTree = SOURCE_ROOT; };
 		369A644EE87E8862BA7AB7E9 /* ofxColorPicker.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxColorPicker.cpp; path = ../../openFrameworks/addons/ofxGui/src/ofxColorPicker.cpp; sourceTree = SOURCE_ROOT; };
@@ -175,6 +178,8 @@
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
 				2EDDAE4A1F801991007AF76C /* HexagonTrack.h */,
+				2EC1048F1FAFCA46007C4CEB /* ofRecodedApp.cpp */,
+				2EC104901FAFCA46007C4CEB /* ofRecodedApp.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -290,6 +295,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
+				2EC104911FAFCA46007C4CEB /* ofRecodedApp.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
 				1D54A3D1C2CCEACF3844B3EC /* ofxBaseGui.cpp in Sources */,
 				D14112331A0BCEF6A1B28D26 /* ofxButton.cpp in Sources */,
