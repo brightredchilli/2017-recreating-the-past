@@ -15,7 +15,7 @@ void ofApp::setup(){
     vidGrabber.setup(camWidth, camHeight);
 
     ofSetBackgroundAuto(false);
-    targetImage.load("ying.png");
+    targetImage.load("sources/ying.png");
     targetImage.setImageType(OF_IMAGE_COLOR);
 
     int cols = targetImage.getWidth() / res;
@@ -42,7 +42,7 @@ void ofApp::draw(){
         int bytesPerPixel = 3;
         unsigned char * targetPointer = targetImage.getPixels().getData();
 
-        for (int it = 0; it < 3000; it++) {
+        for (int it = 0; it < 10000; it++) {
             int i = floor(ofRandom(cols)) * res;
             int j = floor(ofRandom(rows)) * res;
             float previousTargetScore = targetScore;
