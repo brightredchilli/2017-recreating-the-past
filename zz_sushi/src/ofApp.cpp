@@ -57,8 +57,6 @@ void ofApp::draw(){
         }
     }
 
-
-
     ofPopMatrix();
     ofPopStyle();
 }

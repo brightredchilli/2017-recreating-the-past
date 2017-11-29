@@ -7,7 +7,6 @@ void ofApp::setup(){
     ofSetCircleResolution(50);
     center.set(0, 0);
     ofBackground(0);
-    blur.setup(ofGetWidth(), ofGetHeight(), 2, .2, 4, .3);
     numLoops = 13;
     for(int i = 0; i < numLoops; i++) {
         loops.push_back(false);
@@ -23,6 +22,8 @@ void ofApp::setup(){
     panel.add(group);
 
     panel.loadFromFile("settings.xml");
+    circleImage.load("dot.png");
+    circleImage.resize(20, 20);
 }
 
 //--------------------------------------------------------------
@@ -32,10 +33,6 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     // draw circles around in a circle
-
-    if (blurEnabled) {
-        blur.begin();
-    }
 
     ofPushStyle();
     ofStyle style = ofGetStyle();
@@ -87,10 +84,6 @@ void ofApp::draw(){
 
     ofPopMatrix();
     ofPopStyle();
-    if (blurEnabled) {
-        blur.end();
-        blur.draw();
-    }
 
     ofDrawBitmapString(ofToString((int) ofGetFrameRate()), 10, 20);
     panel.draw();
@@ -126,7 +119,7 @@ void ofApp::drawLoop12() {
         for (int j = 0; j < childCount; j++) {
             x = childRadius * sin(-time + childIncrement * j);
             y = childRadius * cos(-time + childIncrement * j);
-            ofDrawCircle(x, y, 2);
+            drawCircle(x, y, 2);
         }
 
         ofPopMatrix();
@@ -157,13 +150,13 @@ void ofApp::drawLoop9() {
 
         ofPushMatrix();
         ofTranslate(x, y);
-        int childCount = 90 + sin(time * 0.8) * 20;
+        int childCount = 90;
         int childRadius = 330;
         float childIncrement = TWO_PI / childCount;
         for (int j = 0; j < childCount; j++) {
-            x = radius * sin(-time + childIncrement * j);
-            y = radius * cos(-time + childIncrement * j);
-            ofDrawCircle(x, y, 1.5);
+            x = radius * sin(time + childIncrement * j);
+            y = radius * cos(time + childIncrement * j);
+            drawCircle(x, y, 1.5);
         }
 
         ofPopMatrix();
@@ -198,7 +191,7 @@ void ofApp::drawLoop10() {
             childRadius = childRadius + 100 * cos(3 * childIncrement * j)*sin(3 * childIncrement * j);
             x = childRadius * sin(-time + childIncrement * j);
             y = childRadius * cos(-time + childIncrement * j);
-            ofDrawCircle(x, y, 1.2);
+            drawCircle(x, y, 1.2);
         }
 
         ofPopMatrix();
@@ -234,7 +227,7 @@ void ofApp::drawLoop11() {
             childRadius = childRadius + 200 * sin(j / (childCount - 1) * TWO_PI);
             x = childRadius * sin(-time + childIncrement * j);
             y = childRadius * cos(-time + childIncrement * j);
-            ofDrawCircle(x, y, 1.5);
+            drawCircle(x, y, 1.5);
         }
 
         ofPopMatrix();
@@ -261,7 +254,7 @@ void ofApp::drawLoop() {
             float radius = innerRadius + (j * rowoffset) + sin(time * 0.6) * 200;
             float x = center.x + radius * sin(time + increment * i - sin(time * 0.4) * j * 0.32);
             float y = center.y + radius * cos(time + increment * i - sin(time * 0.4) * j * 0.32);
-            ofDrawCircle(x, y, 10);
+            drawCircle(x, y, 10);
         }
     }
     ofPopStyle();
@@ -285,7 +278,7 @@ void ofApp::drawLoop1() {
             float radius = innerRadius + (j * rowoffset) + (sin(time * 0.8) + 1) * 400;
             float x = center.x + radius * sin(time + increment * i + sin(time * 0.5) * j * 0.4);
             float y = center.y + radius * cos(time + increment * i + sin(time * 0.5) * j * 0.4);
-            ofDrawCircle(x, y, 10);
+            drawCircle(x, y, 10);
         }
     }
     ofPopStyle();
@@ -310,7 +303,7 @@ void ofApp::drawLoop2() {
         float x = center.x + radius * cos(t);
         float y = center.y + radius * sin(t);
 
-        ofDrawCircle(x, y, 10);
+        drawCircle(x, y, 10);
     }
     ofPopStyle();
 }
@@ -331,7 +324,7 @@ void ofApp::drawLoop3() {
             float radius = innerRadius + (j * rowOffset) + -cos(time) * 100;
             float x = center.x + radius * sin(time + increment * i + j * 0.09);
             float y = center.y + radius * cos(time + increment * i + j * 0.09);
-            ofDrawCircle(x, y, 8);
+            drawCircle(x, y, 8);
         }
     }
     ofPopStyle();
@@ -358,7 +351,7 @@ void ofApp::drawLoop4() {
             }
             float x = center.x + radius * sin(time + increment * i + j * 0.1);
             float y = center.y + radius * cos(time + increment * i + j * 0.1);
-            ofDrawCircle(x, y, 8);
+            drawCircle(x, y, 8);
         }
     }
     ofPopStyle();
@@ -381,7 +374,7 @@ void ofApp::drawLoop5() {
             float radius = innerRadius + innerRadius * cos(5.0/6.0 * t);
             float x = center.x + radius * sin(time + increment * i + sin(j) * -3.5);
             float y = center.y + radius * cos(time + increment * i + sin(j) * -3.5);
-            ofDrawCircle(x, y, 10);
+            drawCircle(x, y, 10);
         }
     }
     ofPopStyle();
@@ -404,7 +397,7 @@ void ofApp::drawLoop6() {
             float radius = 100 + innerRadius * cos(-time + 4.0/7.0 * increment * i);
             float x = center.x + radius * sin(t);
             float y = center.y + radius * cos(t);
-            ofDrawCircle(x, y, 10);
+            drawCircle(x, y, 10);
         }
     }
     ofPopStyle();
@@ -428,7 +421,7 @@ void ofApp::drawLoop7() {
         float radius = 100 + innerRadius * cos(time + 5.0/7.0 * increment * i);
         float x = center.x + radius * sin(t);
         float y = center.y + radius * cos(t);
-        ofDrawCircle(x, y, 10);
+        drawCircle(x, y, 10);
     }
     ofPopStyle();
 }
@@ -451,7 +444,7 @@ void ofApp::drawLoop8() {
         float radius = 100 + innerRadius * cos(-time + 7.0/9.0 * increment * i);
         float x = center.x + radius * sin(t);
         float y = center.y + radius * cos(t);
-        ofDrawCircle(x, y, 10);
+        drawCircle(x, y, 10);
     }
     ofPopStyle();
 }
@@ -551,5 +544,11 @@ void ofApp::gotMessage(ofMessage msg){
 
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
+
+}
+
+void ofApp::drawCircle(float x, float y, float size) {
+    // size is ignored for now
+    circleImage.draw(x - circleImage.getWidth()/2, y - circleImage.getHeight()/2);
 
 }

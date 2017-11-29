@@ -116,6 +116,10 @@ void ofApp::draw() {
     panel.draw();
 }
 
+void ofApp::mouseMoved(int x, int y) {
+    mixRatio = ofMap(x, 0, ofGetWidth(), 0, 1);
+}
+
 void ofApp::playVideo(int index) {
     vidPlayer.load(directory.getPath(index));
     int cols = vidPlayer.getWidth() / res;

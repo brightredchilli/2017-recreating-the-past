@@ -9,6 +9,7 @@ class ofApp : public ofBaseApp{
 		void setup();
 		void update();
 		void draw();
+    void mouseMoved(int x, int y);
 
     int res;
     ofVideoPlayer vidPlayer;

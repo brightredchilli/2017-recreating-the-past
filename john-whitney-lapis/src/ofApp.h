@@ -84,6 +84,9 @@ private:
     ofParameterGroup group;
     ofParameter < int > slider1;
     ofParameter < int > slider2;
+    ofImage circleImage;
+
+    void drawCircle(float x, float y, float size);
 
 		
 };
