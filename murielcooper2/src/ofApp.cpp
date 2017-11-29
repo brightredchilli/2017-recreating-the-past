@@ -89,54 +89,6 @@ void ofApp::drawDownwards() {
     ofPopMatrix();
 }
 
-void ofApp::drawUpwards() {
-    ofPushMatrix();
-    ofScale(textToScreenWidthRatio, textToScreenWidthRatio);
-    auto bounds = font.getStringBoundingBox(myString, 0, 0);
-    bounds.x = center.x - bounds.width/2;
-    bounds.y = 0;
-    auto previousBounds = bounds;
-    previousBounds.y += bounds.height; // some accounting so that the bounds is correct on first run
-
-    int count = 0;
-    float scale = initialScale;
-    float scaleBy = initialScaleBy;
-    float t = 1;
-    while(previousBounds.y > -500) {
-        float out = 1/t;
-        auto newBounds = ofRectangle(bounds);
-        newBounds.scaleFromCenter(out);
-        newBounds.y = previousBounds.y - newBounds.height;
-
-//         debug rectangle
-//                ofPushStyle();
-//                ofSetColor(200, count*20, count*20, 100);
-//                ofDrawRectangle(newBounds.x, newBounds.y, newBounds.width, newBounds.height);
-//                ofPopStyle();
-
-        ofPushMatrix();
-        ofTranslate(newBounds.getBottomLeft());
-        ofScale(out, out);
-        for (ofMesh mesh : meshOutlines) {
-            mesh.draw();
-        }
-
-
-        ofPopMatrix();
-
-
-        previousBounds = newBounds;
-        t *= scale;
-        scale += scaleBy * (t);
-        if (scale >= 1) {
-            scale = 1;
-        }
-        count++;
-    }
-
-    ofPopMatrix();
-}
-
 void ofApp::drawMeshOutlines() {
 
 }
@@ -156,45 +108,5 @@ void ofApp::keyReleased(int key){
 
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y ){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseEntered(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseExited(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::windowResized(int w, int h){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
 }
